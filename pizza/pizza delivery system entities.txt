@@ -1,0 +1,13 @@
+
+
+			BUSINESS ENTITIES OF PIZZA DELIVERY MANAGEMENT SYSTEM
+
+Pizza Entity: pizza_id, pizzaname, type and description
+
+Order Entity: id, customer id, order type, order desciption and order number
+
+Customer Entity: id, name. moblie, email, username, password and address
+
+Order status Entity: status id, status name, status update, status time, status type and status description
+
+Payments Entity: payment id, payment cust id, payment date, payment amount and description
