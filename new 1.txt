@@ -1,0 +1,121 @@
+ USE pizza_delivery_management;
+Database changed
+
+Create Customer table
+ CREATE TABLE Customer (
+       customer_id INT PRIMARY KEY AUTO_INCREMENT,
+       first_name VARCHAR(50) NOT NULL,
+      last_name VARCHAR(50) NOT NULL,
+       email VARCHAR(100) NOT NULL,
+       phone_number VARCHAR(20) NOT NULL,
+      password VARCHAR(50) NOT NULL
+     );
+Query OK, 0 rows affected (0.10 sec)
+
+mysql>
+mysql> -- Insert sample data into Customer table
+mysql> INSERT INTO Customer (first_name, last_name, email, phone_number, password)
+    -> VALUES
+    ->   ('John', 'Doe', 'johndoe@example.com', '123-456-7890', 'password123'),
+    ->   ('Jane', 'Smith', 'janesmith@example.com', '555-555-5555', 'secret123');
+Query OK, 2 rows affected (0.05 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql> -- Create Pizza table
+mysql> CREATE TABLE Pizza (
+    ->   pizza_id INT PRIMARY KEY AUTO_INCREMENT,
+    ->   name VARCHAR(50) NOT NULL,
+    ->   price DECIMAL(5,2) NOT NULL,
+    ->   size VARCHAR(10) NOT NULL,
+    ->   toppings VARCHAR(255) NOT NULL
+    -> );
+Query OK, 0 rows affected (0.10 sec)
+
+mysql>
+mysql> -- Insert sample data into Pizza table
+mysql> INSERT INTO Pizza (name, price, size, toppings)
+    -> VALUES
+    ->   ('Pepperoni', 10.99, 'Medium', 'Pepperoni, Cheese'),
+    ->   ('Veggie', 12.99, 'Large', 'Mushrooms, Onions, Peppers, Olives, Cheese');
+Query OK, 2 rows affected (0.01 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql> -- Create Order table
+mysql> CREATE TABLE `Order` (
+    ->   order_id INT PRIMARY KEY AUTO_INCREMENT,
+    ->   customer_id INT NOT NULL,
+    ->   pizza_id INT NOT NULL,
+    ->   date_time DATETIME NOT NULL,
+    ->   status VARCHAR(20) NOT NULL,
+    ->   delivery_address VARCHAR(255) NOT NULL,
+    ->   total_price DECIMAL(6,2) NOT NULL,
+    ->   FOREIGN KEY (customer_id) REFERENCES Customer(customer_id),
+    ->   FOREIGN KEY (pizza_id) REFERENCES Pizza(pizza_id)
+    -> );
+Query OK, 0 rows affected (0.16 sec)
+
+mysql>
+mysql> -- Insert sample data into Order table
+mysql> INSERT INTO `Order` (customer_id, pizza_id, date_time, status, delivery_address, total_price)
+    -> VALUES
+    ->   (1, 1, NOW(), 'Pending', '123 Main St, Anytown USA', 10.99),
+    ->   (2, 2, NOW(), 'Delivered', '456 Elm St, Anytown USA', 12.99);
+Query OK, 2 rows affected (0.04 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql> -- Create Delivery table
+mysql> CREATE TABLE Delivery (
+    ->   delivery_id INT PRIMARY KEY AUTO_INCREMENT,
+    ->   order_id INT NOT NULL,
+    ->   delivery_personnel_id INT NOT NULL,
+    ->   delivery_vehicle_id INT NOT NULL,
+    ->   status VARCHAR(20) NOT NULL,
+    ->   delivery_time DATETIME NOT NULL,
+    ->   FOREIGN KEY (order_id) REFERENCES `Order`(order_id)
+    -> );
+Query OK, 0 rows affected (0.21 sec)
+
+mysql>
+mysql> -- Insert sample data into Delivery table
+mysql> INSERT INTO Delivery (order_id, delivery_personnel_id, delivery_vehicle_id, status, delivery_time)
+    -> VALUES
+    ->   (1, 1, 1, 'Pending', NOW()),
+    ->   (2, 2, 2, 'Delivered', NOW());
+Query OK, 2 rows affected (0.03 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql> -- Create Payment table
+mysql> CREATE TABLE Payment (
+    ->   payment_id INT PRIMARY KEY AUTO_INCREMENT,
+    ->   order_id INT NOT NULL,
+    ->   amount DECIMAL(6,2) NOT NULL,
+    ->   status VARCHAR(20) NOT NULL,
+    ->   transaction_id VARCHAR(50) NOT NULL,
+    ->   FOREIGN KEY (order_id) REFERENCES `Order`(order_id)
+    -> );
+Query OK, 0 rows affected (0.23 sec)
+
+mysql>
+mysql> -- Insert sample data into Payment table
+mysql> INSERT INTO Payment (order_id, amount, status, transaction_id)
+    -> VALUES
+    ->   (1, 10.99, 'Paid', 'ABC123'),
+    ->   (2, 12.99, 'Paid', 'DEF456');
+Query OK, 2 rows affected (0.04 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> show tables;
++-------------------------------------+
+| Tables_in_pizza_delivery_management |
++-------------------------------------+
+| customer                            |
+| delivery                            |
+| order                               |
+| payment                             |
+| pizza                               |
++-------------------------------------+
+5 rows in set (0.00 sec)
